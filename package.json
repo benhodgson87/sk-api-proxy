@@ -1,0 +1,18 @@
+{
+  "name": "songkick-api-proxy",
+  "version": "1.0.0",
+  "description": "An Express based API proxy to get around the Songkick API's lack of CORS support",
+  "main": "index.js",
+  "scripts": {
+    "serve": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "es6-promise": "^4.1.1",
+    "express": "^4.15.3",
+    "isomorphic-fetch": "^2.2.1"
+  }
+}
