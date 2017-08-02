@@ -4,7 +4,7 @@
   "description": "An Express based API proxy to get around the Songkick API's lack of CORS support",
   "main": "index.js",
   "scripts": {
-    "serve": "node index.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
