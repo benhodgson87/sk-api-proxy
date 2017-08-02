@@ -15,9 +15,11 @@ app.get('/', function (req, res) {
 
 app.post('/', function(req, res){
     console.log(req.body)
+    
+    const apiKey = 'JgBFoQiSelMOekbB'
     const endpoint = req.body.endpoint
-    const apiKey = (endpoint.includes('?') ? `&` : `?`) + `apikey=${req.body.apiKey}`
-    const apiUrl = `http://api.songkick.com/api/3.0/${endpoint}${apiKey}`
+    const apiKeyString = (endpoint.includes('?') ? `&` : `?`) + `apikey=${apiKey}`
+    const apiUrl = `http://api.songkick.com/api/3.0/${endpoint}${apiKeyString}`
 
     fetch(apiUrl, { method: 'GET' })
     .then(resp => resp.json())
