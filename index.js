@@ -15,10 +15,9 @@ app.get('/', function (req, res) {
 
 app.post('/', function(req, res){
     console.log(req.body)
-    
-    const apiKey = 'JgBFoQiSelMOekbB'
+
     const endpoint = req.body.endpoint
-    const apiKeyString = (endpoint.includes('?') ? `&` : `?`) + `apikey=${apiKey}`
+    const apiKeyString = (endpoint.includes('?') ? `&` : `?`) + `apikey=${process.env.SK_API_KEY}`
     const apiUrl = `http://api.songkick.com/api/3.0/${endpoint}${apiKeyString}`
 
     fetch(apiUrl, { method: 'GET' })
