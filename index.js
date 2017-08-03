@@ -1,84 +1,39 @@
-require('es6-promise').polyfill()
-require('isomorphic-fetch')
+const Express = require('express')
+const BodyParser = require('body-parser')
+const SKApi = require('./src/skapi')
 
-const express = require('express')
-const bodyParser = require('body-parser')
-const jdu = require('jdu')
-
-const app = express()
+const app = Express()
 const port = process.env.PORT || 8080
 
-app.use(bodyParser.json())
-
-const createUrl = query => {
-    const endpoint = jdu.replace(query)
-    const apiUrl = 'http://api.songkick.com/api/3.0/'
-    const apiKey = (endpoint.includes('?') ? `&` : `?`) + `apikey=${process.env.SK_API_KEY}`
-    return `${apiUrl}${endpoint}${apiKey}`
+const getPayload = function(req) {
+    return (req.method === 'GET') ? req.query.get : req.body.endpoint
 }
 
-const request = endpoint => {
-    const url = createUrl(endpoint)
-    console.log(`>> Requesting: ${url}`)
+const logFeedback = function(req, res, next) {
+    const request = getPayload(req)
+    if (!process.env.SK_API_KEY) console.log('>> ERROR: No API Key Defined!')
+    console.log(`>> Received ${req.method}: ${request}`)
+    next()
+}
 
-    return new Promise((resolve, reject) => {
-        fetch(url, {
-            method: 'GET',
-            headers: new Headers({
-                'content-type': 'application/json; charset=utf-8'
-            })
-        })
-        .then(r => r.json())
+const requestHandler = function(req, res, next) {
+    const request = getPayload(req)
+    if (!!request && !!process.env.SK_API_KEY) {
+        SKApi.request(request)
         .then(data => {
-            resolve(data)
+            res.send(data)
         })
         .catch(err => {
-            reject(err)
-        })
-    })
-}
-
-const respond = (res, payload) => {
-    res.set({ 'content-type': 'application/json; charset=utf-8' })
-    res.send(payload)
-}
-
-app.get('/', function (req, res) {
-    const endpoint = req.query.get
-    console.log(`>> Received GET: ${endpoint}`)
-
-    if (!process.env.SK_API_KEY) console.error('!! No API Key Defined')
-    if (req.query.get && !!process.env.SK_API_KEY) {
-        request(endpoint)
-        .then(data => {
-            respond(res, data)
-        })
-        .catch(err => {
-            respond(res, err)
+            res.send(err)
         })
     } else {
-        respond(res, 'Please pass a get parameter containing the SK API resource you want to retrieve.')
+        res.send('An error occurred. Please ensure you have passed the correct parameters, or try again later.')
     }
-})
+}
 
-app.post('/', function(req, res){
-    const endpoint = req.body.endpoint
-    console.log(`>> Received POST: ${endpoint}`)
-
-    if (!process.env.SK_API_KEY) console.error('!! No API Key Defined')
-    if (!!req.body.endpoint && !!process.env.SK_API_KEY) {
-        request(endpoint)
-        .then(data => {
-            respond(res, data)
-        })
-        .catch(err => {
-            respond(res, err)
-        })
-    } else {
-        respond(res, 'Please post a body object containing the SK API resource you want to retrieve.')
-    }
-});
-
+app.use(BodyParser.json())
+app.use(logFeedback)
+app.use(requestHandler)
 
 app.listen(port, function () {
     console.log(`API proxy listening on port ${port}`)
