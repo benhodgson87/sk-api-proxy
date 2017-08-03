@@ -4,8 +4,8 @@ require('isomorphic-fetch')
 const express = require('express')
 const bodyParser = require('body-parser')
 const jdu = require('jdu')
-const app = express()
 
+const app = express()
 const port = process.env.PORT || 8080
 
 app.use(bodyParser.json())
@@ -19,7 +19,7 @@ const createUrl = query => {
 
 const request = endpoint => {
     const url = createUrl(endpoint)
-    console.log(`-- Requesting: ${url}`)
+    console.log(`>> Requesting: ${url}`)
 
     return new Promise((resolve, reject) => {
         fetch(url, {
@@ -45,8 +45,9 @@ const respond = (res, payload) => {
 
 app.get('/', function (req, res) {
     const endpoint = req.query.get
-    console.log(`-- Received GET: ${endpoint}`)
+    console.log(`>> Received GET: ${endpoint}`)
 
+    if (!process.env.SK_API_KEY) console.error('!! No API Key Defined')
     if (req.query.get && !!process.env.SK_API_KEY) {
         request(endpoint)
         .then(data => {
@@ -62,8 +63,9 @@ app.get('/', function (req, res) {
 
 app.post('/', function(req, res){
     const endpoint = req.body.endpoint
-    console.log(`-- Received POST: ${endpoint}`)
+    console.log(`>> Received POST: ${endpoint}`)
 
+    if (!process.env.SK_API_KEY) console.error('!! No API Key Defined')
     if (!!req.body.endpoint && !!process.env.SK_API_KEY) {
         request(endpoint)
         .then(data => {
