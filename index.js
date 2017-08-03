@@ -10,7 +10,7 @@ const port = process.env.PORT || 8080
 app.use(bodyParser.json())
 
 const createUrl = query => {
-    const endpoint = decodeURI(query)
+    const endpoint = decodeURIComponent(query)
     const apiUrl = 'http://api.songkick.com/api/3.0/'
     const apiKey = (endpoint.includes('?') ? `&` : `?`) + `apikey=${process.env.SK_API_KEY}`
     return `${apiUrl}${endpoint}${apiKey}`
