@@ -16,7 +16,7 @@ class SKApi {
     }
 
     request(endpoint) {
-        const url = this.createUrl(endpoint)        
+        const url = this.createUrl(endpoint)
         return new Promise((resolve, reject) => {
             fetch(url, {
                 method: 'GET',
