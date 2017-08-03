@@ -13,9 +13,7 @@
     "body-parser": "^1.17.2",
     "es6-promise": "^4.1.1",
     "express": "^4.15.3",
-    "isomorphic-fetch": "^2.2.1"
-  },
-  "devDependencies": {
+    "isomorphic-fetch": "^2.2.1",
     "jdu": "^1.0.0"
   }
 }
