@@ -24,12 +24,8 @@ export default class ApiHandler {
         }),
       })
       .then(r => r.json())
-      .then(data => {
-        resolve(data)
-      })
-      .catch(err => {
-        reject(err)
-      })
+      .then(data => resolve(data))
+      .catch(err => reject(err))
     })
   }
 }
