@@ -4,9 +4,11 @@ A quickly thrown together Express proxy for the Songkick API to bypass lack of C
 
 ## Usage
 
-Clone this repo, and push it up to Heroku (or similar).
-
 Set an environment variable of `SK_API_KEY` with your Songkick API Key.
+
+You can run the repo locally using `npm run dev` / `yarn dev`.
+
+To use it remotely, simply push it up to Heroku - or your preferred equivalent.
 
 ## API Requests
 
