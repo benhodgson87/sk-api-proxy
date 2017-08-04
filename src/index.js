@@ -15,12 +15,8 @@ const logFeedback = (req, res, next) => {
 const requestHandler = (req, res) => {
   if (req.method === 'GET' && process.env.SK_API_KEY) {
     api.request(req.originalUrl)
-    .then(data => {
-      res.send(data)
-    })
-    .catch(err => {
-      res.send(err)
-    })
+      .then(data => res.send(data))
+      .catch(err => res.send(err))
   } else {
     res.send('An error occurred. Please ensure you have passed the correct parameters, or try again later.')
   }

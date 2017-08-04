@@ -23,9 +23,9 @@ export default class ApiHandler {
           'content-type': 'application/json; charset=utf-8',
         }),
       })
-      .then(r => r.json())
-      .then(data => resolve(data))
-      .catch(err => reject(err))
+        .then(r => r.json())
+        .then(data => resolve(data))
+        .catch(err => reject(err))
     })
   }
 }
