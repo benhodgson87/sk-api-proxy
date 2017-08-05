@@ -32,5 +32,6 @@ app.listen(port, () => {
     Log.e('Error: No Songkick API Key provided in environment variables.')
     process.exit()
   }
-  Log.i(`Service started. Listening for requests on port ${port}.`)
+  Log.i(`Songkick API Key: ${config.API_KEY}`)
+  Log.i(`Listening for requests on port ${port}.`)
 })
