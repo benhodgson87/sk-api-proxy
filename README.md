@@ -1,6 +1,6 @@
 # sk-api-proxy
 
-A quickly thrown together Express proxy for the Songkick API to bypass lack of CORS / avoid using JSONP.
+A quickly thrown together Express proxy for the Songkick API to bypass lack of CORS - which isn't supported as it exposes the API key.
 
 ## Usage
 
