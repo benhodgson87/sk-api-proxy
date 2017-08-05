@@ -1,5 +1,6 @@
 import Express from 'express'
 import BodyParser from 'body-parser'
+import Log from 'color-logger'
 import ApiHandler from './libs/apiHandler'
 import * as config from './config'
 
@@ -8,8 +9,7 @@ const app = Express()
 const port = process.env.PORT || 8080
 
 const logFeedback = (req, res, next) => {
-  if (!config.API_KEY) console.log('>> ERROR: No API Key Defined!')
-  console.log(`>> Received ${req.method}: ${req.originalUrl}`)
+  Log.i(`Received ${req.method}: ${req.originalUrl}`)
   next()
 }
 
@@ -28,5 +28,9 @@ app.use(logFeedback)
 app.use(requestHandler)
 
 app.listen(port, () => {
-  console.log(`API proxy listening on port ${port}`)
+  if (!config.API_KEY) {
+    Log.e('Error: No Songkick API Key provided in environment variables.')
+    process.exit()
+  }
+  Log.i(`Service started. Listening for requests on port ${port}.`)
 })
